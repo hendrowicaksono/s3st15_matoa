@@ -19,9 +19,6 @@
  *
  */
 
-// key to get full database access
-define('DB_ACCESS', 'fa');
-
 // main system configuration
 if (!defined('SENAYAN_BASE_DIR')) {
     define('INDEX_AUTH', '1');

@@ -90,8 +90,7 @@ class simbio_dbop extends simbio
         $_str_value = substr_replace($_str_value, '', 0, 1);
 
         // the insert query
-        $this->sql_string = "INSERT INTO $str_table ($_str_columns) "
-            ."VALUES ($_str_value)";
+        $this->sql_string = sprintf("INSERT INTO $str_table (%s) VALUES (%s)", $_str_columns, $_str_value);
         $_insert = $this->obj_db->query($this->sql_string);
         // if an error occur
         if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
@@ -141,7 +140,7 @@ class simbio_dbop extends simbio
         }
 
         // update query
-        $_update = $this->obj_db->query("UPDATE $str_table SET $_set WHERE $str_criteria");
+        $_update = $this->obj_db->query(sprintf("UPDATE %s SET $_set WHERE %s", $str_table, $str_criteria));
         // if an error occur
         if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
         // number of affected rows
@@ -161,7 +160,7 @@ class simbio_dbop extends simbio
     public function delete($str_table, $str_criteria)
     {
         // the delete query
-        $_delete = $this->obj_db->query("DELETE FROM $str_table WHERE $str_criteria");
+        $_delete = $this->obj_db->query(sprintf("DELETE FROM %s WHERE %s", $str_table, $str_criteria));
         // if an error occur
         if ($this->obj_db->error) { $this->error = $this->obj_db->error; return false; }
         // affected rows
