@@ -49,6 +49,10 @@ ob_start();
 
 // if there is login action
 if (isset($_POST['logMeIn'])) {
+    if($_SESSION['csrfToken'] != $_POST['csrfToken']) {
+        echo '<script type="text/javascript">alert(\''.__('Invalid Session').'\');</script>';
+        die ('<a href="index.php?p=login">Try relogin</a>');
+    }
     $username = strip_tags($_POST['userName']);
     $password = strip_tags($_POST['passWord']);
     if (!$username OR !$password) {
@@ -149,6 +153,9 @@ if (isset($_POST['logMeIn'])) {
     <div><input type="text" name="userName" id="userName" style="width: 80%;" /></div>
     <div class="heading1 marginTop">Password</div>
     <div><input type="password" name="passWord" style="width: 80%;" /></div>
+    <?php $token = md5(date("Y/m/d h:i:j").uniqid(rand(), TRUE)); $_SESSION['csrfToken'] = $token; ?>
+    <div><input type="hidden" name="csrfToken" value="<?php echo $token; ?>" /></div>
+
     <!-- Captcha in form - start -->
     <?php if ($sysconf['captcha']['smc']['enable']) { ?>
       <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>
